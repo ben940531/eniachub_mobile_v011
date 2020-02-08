@@ -22,15 +22,8 @@ class _LoginPageState extends State<LoginPage> {
       // setState(() {
       //   _isLoading = true;
       // });
-      EasyLoading.instance.loadingStyle = EasyLoadingStyle.custom;
-      EasyLoading.instance.backgroundColor = Colors.white;
-      EasyLoading.instance.progressColor  = Colors.black;
-      EasyLoading.instance.textColor = Colors.black;
-      EasyLoading.instance.indicatorType = EasyLoadingIndicatorType.wave;
-      EasyLoading.instance.indicatorColor = Colors.blue;
-      EasyLoading.instance.indicatorSize = 80.0;
-      EasyLoading.instance.maskType = EasyLoadingMaskType.black;
-      EasyLoading.show(status:'Loading');
+
+      EasyLoading.show(status: 'Loading');
       // Log in
       var _result = await authService.login(_verificationTextController.text);
       // After logging in
@@ -39,8 +32,11 @@ class _LoginPageState extends State<LoginPage> {
         //    _isLoading = false;
         // });
         // Navigator.push(context,MaterialPageRoute(builder: (context)=>HomePage()));
-      } else {
-       
+        EasyLoading.dismiss();
+        Navigator.pushNamed(context, '/home');
+      } else {                
+        EasyLoading.showError('Failed to log in',
+            duration: Duration(seconds: 3));
       }
     }
   }
@@ -48,113 +44,113 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.blue[500],
+        // backgroundColor: Colors.blue[500],
         body: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 150.0, bottom: 150.0),
-                    child: Text(
-                      'eniacHUB Mobile',
-                      style: TextStyle(
-                        fontSize: 40,
-                        color: Theme.of(context).primaryColorLight,
-                        letterSpacing: .6,
-                      ),
-                    ),
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 150.0, bottom: 150.0),
+                child: Text(
+                  'eniacHUB Mobile',
+                  style: TextStyle(
+                    fontSize: 40,
+                    color: Theme.of(context).primaryColor,
+                    letterSpacing: .6,
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.only(top: 50.0),
-                  //   child: Text(
-                  //     'Login',
-                  //     style: TextStyle(
-                  //       fontSize: 30,
-                  //       letterSpacing: .5,
-                  //       color: Theme.of(context).primaryColorLight,
-                  //     ),
-                  //   ),
-                  // ),
-                  Form(
-                    key: _formKey,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width - 100,
-                      child: Column(
-                        children: <Widget>[
-                          TextFormField(
-                            obscureText: true,
-                            controller: _verificationTextController,
-                            decoration: InputDecoration(
-                                hintText: "Code given by eniachub.com",
-                                border: OutlineInputBorder(),
-                                labelText: 'Verification code',
-                                labelStyle: Theme.of(context).textTheme.body1
-                                // labelStyle:
-                                //     TextStyle(color: Colors.white, fontSize: 16),
-                                // hintStyle:
-                                //     TextStyle(color: Colors.white, fontSize: 16.0),
-                                ),
-                            validator: (val) {
-                              if (val.isEmpty) {
-                                return 'Please enter some text';
-                              }
-                              if (val.length < 6) {
-                                return 'The given verification code is too short';
-                              }
-                              return null;
-                            },
-                          ),
-                          SizedBox(
-                            height: 80.0,
-                          ),
-                          ButtonTheme(
-                            minWidth: MediaQuery.of(context).size.width,
-                            child: RaisedButton(
-                              onPressed: signIn,
-                              color: Colors.green,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0)),
-                              child: Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Text('Login',
-                                    style: Theme.of(context).textTheme.body1
-                                    // fontSize: 18.0,
-                                    ),
-                              ),
-                            ),
-                          ),
-                          // ),
-                        ],
-                      ),
-                    ),
-                  )
-
-                  // Form(
-                  //   key: _formKey,
-                  //   child: Column(
-                  //     children: <Widget>[
-                  //       TextFormField(
-                  //         obscureText: true,
-                  //         controller: _verificationTextController,
-                  //         validator: (val) {
-                  //           if (val.isEmpty) {
-                  //             return 'Please enter some text';
-                  //           }
-                  //           if (val.length < 6) {
-                  //             return 'The given verification code is too short';
-                  //           }
-                  //           return null;
-                  //         },
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                ],
+                ),
               ),
-            ),
-          ],
-        ));
+              // Padding(
+              //   padding: const EdgeInsets.only(top: 50.0),
+              //   child: Text(
+              //     'Login',
+              //     style: TextStyle(
+              //       fontSize: 30,
+              //       letterSpacing: .5,
+              //       color: Theme.of(context).primaryColorLight,
+              //     ),
+              //   ),
+              // ),
+              Form(
+                key: _formKey,
+                child: Container(
+                  width: MediaQuery.of(context).size.width - 100,
+                  child: Column(
+                    children: <Widget>[
+                      TextFormField(
+                        obscureText: true,
+                        controller: _verificationTextController,
+                        decoration: InputDecoration(
+                            hintText: "Code given by eniachub.com",
+                            border: OutlineInputBorder(),
+                            labelText: 'Verification code',
+                            labelStyle: Theme.of(context).textTheme.body1
+                            // labelStyle:
+                            //     TextStyle(color: Colors.white, fontSize: 16),
+                            // hintStyle:
+                            //     TextStyle(color: Colors.white, fontSize: 16.0),
+                            ),
+                        validator: (val) {
+                          if (val.isEmpty) {
+                            return 'Please enter some text';
+                          }
+                          if (val.length < 6) {
+                            return 'The given verification code is too short';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(
+                        height: 80.0,
+                      ),
+                      ButtonTheme(
+                        minWidth: MediaQuery.of(context).size.width,
+                        child: RaisedButton(
+                          onPressed: signIn,
+                          color: Colors.green,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Text('Login',
+                                style: Theme.of(context).textTheme.button
+                                // fontSize: 18.0,
+                                ),
+                          ),
+                        ),
+                      ),
+                      // ),
+                    ],
+                  ),
+                ),
+              )
+
+              // Form(
+              //   key: _formKey,
+              //   child: Column(
+              //     children: <Widget>[
+              //       TextFormField(
+              //         obscureText: true,
+              //         controller: _verificationTextController,
+              //         validator: (val) {
+              //           if (val.isEmpty) {
+              //             return 'Please enter some text';
+              //           }
+              //           if (val.length < 6) {
+              //             return 'The given verification code is too short';
+              //           }
+              //           return null;
+              //         },
+              //       ),
+              //     ],
+              //   ),
+              // ),
+            ],
+          ),
+        ),
+      ],
+    ));
   }
 }
