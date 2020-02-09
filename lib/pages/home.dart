@@ -1,3 +1,5 @@
+import 'package:eniachub_mobile_v011/classes/Entity.dart';
+import 'package:eniachub_mobile_v011/pages/company.dart';
 import 'package:eniachub_mobile_v011/services/authService.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +19,10 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  List<String> _widgetList = ['ENIAC Development', 'DataStore'];
+  List<Entity> _widgetList = [
+    Entity('ENIAC Development', 'abc'),
+    Entity('DataStore', 'abc2'),
+  ];
 
   Future<bool> _onBackPress() async {
     await showDialog(
@@ -69,14 +74,23 @@ class _HomePageState extends State<HomePage> {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: RaisedButton(
-                        onPressed: () => {},
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            CompanyPage.routeName,
+                            arguments: Entity(
+                              _widgetList[index].name,
+                              _widgetList[index].connectionId,
+                            ),
+                          );
+                        },
                         color: Colors.blue,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5.0)),
                         child: Padding(
                           padding: const EdgeInsets.all(15.0),
                           child: Text(
-                            _widgetList[index],
+                            _widgetList[index].name,
                             style: Theme.of(context).textTheme.button,
                           ),
                         ),
