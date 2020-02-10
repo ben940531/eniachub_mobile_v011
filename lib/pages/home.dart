@@ -78,10 +78,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.pushNamed(
                             context,
                             CompanyPage.routeName,
-                            arguments: Entity(
-                              _widgetList[index].name,
-                              _widgetList[index].connectionId,
-                            ),
+                            arguments: _widgetList[index],
                           );
                         },
                         color: Colors.blue,
