@@ -2,6 +2,7 @@ import 'package:eniachub_mobile_v011/classes/Entity.dart';
 import 'package:eniachub_mobile_v011/pages/company.dart';
 import 'package:eniachub_mobile_v011/pages/home.dart';
 import 'package:eniachub_mobile_v011/pages/login.dart';
+import 'package:eniachub_mobile_v011/pages/personal.dart';
 import 'package:eniachub_mobile_v011/services/authService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -47,11 +48,18 @@ class EniacHUBMobileApp extends StatelessWidget {
         ),
         home: _defaultHome,
         onGenerateRoute: (settings) {
+          final Entity args = settings.arguments;
           if (settings.name == CompanyPage.routeName) {
-            final Entity args = settings.arguments;
-
             return MaterialPageRoute(builder: (context) {
               return CompanyPage(
+                name: args.name,
+                connectionId: args.connectionId,
+              );
+            });
+          }
+          if (settings.name == PersonalPage.routeName) {
+            return MaterialPageRoute(builder: (conext) {
+              return PersonalPage(
                 name: args.name,
                 connectionId: args.connectionId,
               );

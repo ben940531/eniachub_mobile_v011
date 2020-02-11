@@ -1,4 +1,6 @@
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:eniachub_mobile_v011/classes/Entity.dart';
+import 'package:eniachub_mobile_v011/pages/personal.dart';
 import 'package:flutter/material.dart';
 
 class CompanyPage extends StatelessWidget {
@@ -67,6 +69,11 @@ class CompanyPage extends StatelessWidget {
               title: Text('Personal functions'),
               onTap: () {
                 Navigator.pop(context);
+                Navigator.pushNamed(
+                  context,
+                  PersonalPage.routeName,
+                  arguments: Entity(this.name, this.connectionId),
+                );
               },
             ),
             ListTile(
