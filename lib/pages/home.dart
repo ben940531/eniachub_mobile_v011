@@ -15,7 +15,8 @@ class _HomePageState extends State<HomePage> {
     var _result = await _authService.logout();
     if (_result) {
       //go back to login page
-      Navigator.of(context).pushNamed('/login');
+      Navigator.popUntil(
+          context, ModalRoute.withName(Navigator.defaultRouteName));
     }
   }
 

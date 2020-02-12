@@ -1,3 +1,5 @@
+import 'package:eniachub_mobile_v011/classes/Entity.dart';
+import 'package:eniachub_mobile_v011/pages/checkin.dart';
 import 'package:flutter/material.dart';
 
 class PersonalPage extends StatefulWidget {
@@ -32,7 +34,7 @@ class _PersonalPageState extends State<PersonalPage> {
                   Positioned(
                     child: Text(
                       widget.name,
-                      style: Theme.of(context).textTheme.body1,
+                      style: TextStyle(color: Colors.white, fontSize: 18.0),
                     ),
                     bottom: 12.0,
                   )
@@ -41,7 +43,25 @@ class _PersonalPageState extends State<PersonalPage> {
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
-            )
+            ),
+            ListTile(
+              title: Text('Check in/out'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(
+                  context,
+                  CheckInPage.routeName,
+                  arguments: Entity(widget.name, widget.connectionId),
+                );
+              },
+            ),
+            ListTile(
+              title: Text('Back to previous page'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+            ),
           ],
         ),
       ),
@@ -85,7 +105,7 @@ class _PersonalPageState extends State<PersonalPage> {
                         'Developer',
                       ),
                       Text(
-                        'Signed in',
+                        'Checked in',
                       ),
                       Text('PFM Project'),
                     ],

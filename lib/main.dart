@@ -1,5 +1,7 @@
 import 'package:eniachub_mobile_v011/classes/Entity.dart';
+import 'package:eniachub_mobile_v011/pages/checkin.dart';
 import 'package:eniachub_mobile_v011/pages/company.dart';
+import 'package:eniachub_mobile_v011/pages/frontoffice.dart';
 import 'package:eniachub_mobile_v011/pages/home.dart';
 import 'package:eniachub_mobile_v011/pages/login.dart';
 import 'package:eniachub_mobile_v011/pages/personal.dart';
@@ -36,7 +38,7 @@ class EniacHUBMobileApp extends StatelessWidget {
           hintColor: Colors.grey[800],
           textTheme: TextTheme(
             body1: TextStyle(fontSize: 18.0, color: Colors.black),
-            button: TextStyle(fontSize: 18.0, color: Colors.white),
+            button: TextStyle(fontSize: 18.0, color: Colors.white),            
           ),
           inputDecorationTheme: InputDecorationTheme(
             enabledBorder: OutlineInputBorder(
@@ -58,8 +60,24 @@ class EniacHUBMobileApp extends StatelessWidget {
             });
           }
           if (settings.name == PersonalPage.routeName) {
-            return MaterialPageRoute(builder: (conext) {
+            return MaterialPageRoute(builder: (context) {
               return PersonalPage(
+                name: args.name,
+                connectionId: args.connectionId,
+              );
+            });
+          }
+          if (settings.name == CheckInPage.routeName) {
+            return MaterialPageRoute(builder: (context) {
+              return CheckInPage(
+                name: args.name,
+                connectionId: args.connectionId,
+              );
+            });
+          }
+          if(settings.name == FrontOfficePage.routeName){
+            return MaterialPageRoute(builder: (context) {
+              return FrontOfficePage(
                 name: args.name,
                 connectionId: args.connectionId,
               );

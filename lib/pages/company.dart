@@ -1,5 +1,6 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:eniachub_mobile_v011/classes/Entity.dart';
+import 'package:eniachub_mobile_v011/pages/frontoffice.dart';
 import 'package:eniachub_mobile_v011/pages/personal.dart';
 import 'package:flutter/material.dart';
 
@@ -51,7 +52,7 @@ class CompanyPage extends StatelessWidget {
                     bottom: 12.0,
                     child: Text(
                       this.name,
-                      style: Theme.of(context).textTheme.body1,
+                      style: TextStyle(color: Colors.white,fontSize: 18.0),
                     ),
                   )
                 ],
@@ -80,6 +81,11 @@ class CompanyPage extends StatelessWidget {
               title: Text('Front office functions'),
               onTap: () {
                 Navigator.pop(context);
+                  Navigator.pushNamed(
+                  context,
+                  FrontOfficePage.routeName,
+                  arguments: Entity(this.name, this.connectionId),
+                );
               },
             ),
           ],

@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
         // Navigator.push(context,MaterialPageRoute(builder: (context)=>HomePage()));
         EasyLoading.dismiss();
         Navigator.pushNamed(context, '/home');
-      } else {                
+      } else {
         EasyLoading.showError('Failed to log in',
             duration: Duration(seconds: 3));
       }
@@ -114,10 +114,11 @@ class _LoginPageState extends State<LoginPage> {
                               borderRadius: BorderRadius.circular(5.0)),
                           child: Padding(
                             padding: const EdgeInsets.all(15.0),
-                            child: Text('Login',
-                                style: Theme.of(context).textTheme.button
-                                // fontSize: 18.0,
-                                ),
+                            child: Text(
+                              'Login',
+                              style: Theme.of(context).textTheme.button,
+                              // fontSize: 18.0,
+                            ),
                           ),
                         ),
                       ),
