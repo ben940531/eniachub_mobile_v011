@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:eniachub_mobile_v011/classes/Entity.dart';
 import 'package:eniachub_mobile_v011/pages/checkin.dart';
 import 'package:eniachub_mobile_v011/pages/company.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 AuthService authService = new AuthService();
 Widget _defaultHome;
+CameraDescription _firstCamera;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,6 +21,8 @@ void main() async {
   if (_result) {
     _defaultHome = LoginPage(); //HomePage();
   }
+  final cameras = await availableCameras();
+  _firstCamera = cameras.first;
   runApp(EniacHUBMobileApp());
 }
 
@@ -80,6 +84,7 @@ class EniacHUBMobileApp extends StatelessWidget {
               return FrontOfficePage(
                 name: args.name,
                 connectionId: args.connectionId,
+                camera: _firstCamera,
               );
             });
           }
