@@ -6,6 +6,7 @@ import 'package:eniachub_mobile_v011/pages/frontoffice.dart';
 import 'package:eniachub_mobile_v011/pages/home.dart';
 import 'package:eniachub_mobile_v011/pages/login.dart';
 import 'package:eniachub_mobile_v011/pages/personal.dart';
+import 'package:eniachub_mobile_v011/pages/takepicture.dart';
 import 'package:eniachub_mobile_v011/services/authService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -42,7 +43,7 @@ class EniacHUBMobileApp extends StatelessWidget {
           hintColor: Colors.grey[800],
           textTheme: TextTheme(
             body1: TextStyle(fontSize: 18.0, color: Colors.black),
-            button: TextStyle(fontSize: 18.0, color: Colors.white),            
+            button: TextStyle(fontSize: 18.0, color: Colors.white),
           ),
           inputDecorationTheme: InputDecorationTheme(
             enabledBorder: OutlineInputBorder(
@@ -79,12 +80,11 @@ class EniacHUBMobileApp extends StatelessWidget {
               );
             });
           }
-          if(settings.name == FrontOfficePage.routeName){
+          if (settings.name == FrontOfficePage.routeName) {
             return MaterialPageRoute(builder: (context) {
               return FrontOfficePage(
                 name: args.name,
-                connectionId: args.connectionId,
-                camera: _firstCamera,
+                connectionId: args.connectionId,                
               );
             });
           }
@@ -93,6 +93,9 @@ class EniacHUBMobileApp extends StatelessWidget {
         routes: <String, WidgetBuilder>{
           '/login': (BuildContext context) => LoginPage(),
           '/home': (BuildContext context) => HomePage(),
+          '/takePicture': (BuildContext context) => TakePicturePage(
+                camera: _firstCamera,
+              ),
         },
       ),
     );
