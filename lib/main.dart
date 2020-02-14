@@ -20,7 +20,7 @@ void main() async {
   _defaultHome = LoginPage();
   bool _result = await authService.login(null);
   if (_result) {
-    _defaultHome = LoginPage(); //HomePage();
+    _defaultHome = HomePage(); //LoginPage();
   }
   final cameras = await availableCameras();
   _firstCamera = cameras.first;
@@ -59,32 +59,32 @@ class EniacHUBMobileApp extends StatelessWidget {
           if (settings.name == CompanyPage.routeName) {
             return MaterialPageRoute(builder: (context) {
               return CompanyPage(
-                name: args.name,
-                connectionId: args.connectionId,
+                name: args.companyName,
+                connectionId: args.gId,
               );
             });
           }
           if (settings.name == PersonalPage.routeName) {
             return MaterialPageRoute(builder: (context) {
               return PersonalPage(
-                name: args.name,
-                connectionId: args.connectionId,
+                name: args.companyName,
+                connectionId: args.gId,
               );
             });
           }
           if (settings.name == CheckInPage.routeName) {
             return MaterialPageRoute(builder: (context) {
               return CheckInPage(
-                name: args.name,
-                connectionId: args.connectionId,
+                name: args.companyName,
+                connectionId: args.gId,
               );
             });
           }
           if (settings.name == FrontOfficePage.routeName) {
             return MaterialPageRoute(builder: (context) {
               return FrontOfficePage(
-                name: args.name,
-                connectionId: args.connectionId,                
+                name: args.companyName,
+                connectionId: args.gId,                
               );
             });
           }

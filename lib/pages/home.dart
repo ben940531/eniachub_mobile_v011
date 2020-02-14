@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:eniachub_mobile_v011/classes/Entity.dart';
 import 'package:eniachub_mobile_v011/pages/company.dart';
 import 'package:eniachub_mobile_v011/services/authService.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 AuthService _authService = new AuthService();
 
@@ -20,10 +23,37 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  List<Entity> _widgetList = [
-    Entity('ENIAC Development', 'abc'),
-    Entity('DataStore', 'abc2'),
-  ];
+  Future<String> fetchEntities() async {
+    final verifyToken = "2b1dbc1a-d0b0-4da5-8086-d35e1e1237f8";
+    final response = await http.get(
+        'https://eniac-eniactest.azurewebsites.net/api/Authorize?authGid=$verifyToken');
+    if (response.statusCode == 200) {
+      final body = json.decode(response.body) as List<dynamic>;
+      print("authorize response body: $body");
+      var objects = body.map((b) {        
+        return Entity.fromJson(b);
+      }).toList();
+      setState(() {
+        entities = objects;
+      });
+      return "Success";
+    } else {
+      throw Exception('Cannot load entities');
+    }
+  }
+
+  List<Entity> entities;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchEntities();
+  }
+
+  // List<Entity> _widgetList = [
+  //   Entity(companyName: 'ENIAC Development', gId: 'abc'),
+  //   Entity(companyName: 'DataStore', gId: 'abc2'),
+  // ];
 
   Future<bool> _onBackPress() async {
     await showDialog(
@@ -70,7 +100,7 @@ class _HomePageState extends State<HomePage> {
               Expanded(
                 child: ListView.builder(
                   padding: const EdgeInsets.only(top: 80),
-                  itemCount: _widgetList.length,
+                  itemCount: entities != null ? entities.length : 0,
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -79,7 +109,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.pushNamed(
                             context,
                             CompanyPage.routeName,
-                            arguments: _widgetList[index],
+                            arguments: entities[index],
                           );
                         },
                         color: Colors.blue,
@@ -88,7 +118,7 @@ class _HomePageState extends State<HomePage> {
                         child: Padding(
                           padding: const EdgeInsets.all(15.0),
                           child: Text(
-                            _widgetList[index].name,
+                            entities[index].companyName,
                             style: Theme.of(context).textTheme.button,
                           ),
                         ),

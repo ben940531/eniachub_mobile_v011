@@ -51,7 +51,7 @@ class _PersonalPageState extends State<PersonalPage> {
                 Navigator.pushNamed(
                   context,
                   CheckInPage.routeName,
-                  arguments: Entity(widget.name, widget.connectionId),
+                  arguments: Entity(companyName: widget.name, gId: widget.connectionId),
                 );
               },
             ),

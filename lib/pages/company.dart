@@ -73,7 +73,7 @@ class CompanyPage extends StatelessWidget {
                 Navigator.pushNamed(
                   context,
                   PersonalPage.routeName,
-                  arguments: Entity(this.name, this.connectionId),
+                  arguments: Entity(companyName: this.name, gId: this.connectionId),
                 );
               },
             ),
@@ -84,7 +84,7 @@ class CompanyPage extends StatelessWidget {
                   Navigator.pushNamed(
                   context,
                   FrontOfficePage.routeName,
-                  arguments: Entity(this.name, this.connectionId),
+                  arguments: Entity(companyName: this.name, gId: this.connectionId),
                 );
               },
             ),
