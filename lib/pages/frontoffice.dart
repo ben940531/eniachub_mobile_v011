@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class FrontOfficePage extends StatefulWidget {
   static const String routeName = '/frontoffice';
@@ -10,7 +11,7 @@ class FrontOfficePage extends StatefulWidget {
   const FrontOfficePage({
     Key key,
     @required this.name,
-    @required this.connectionId,    
+    @required this.connectionId,
   }) : super(key: key);
 
   @override
@@ -22,6 +23,8 @@ class _FrontOfficePageState extends State<FrontOfficePage>
   final List<Map<String, String>> _rows = [
     {"ID": "1", "Number": "0", "ImagePath": ""},
   ];
+
+  File _imageFile;
 
   final TextEditingController _numberFieldController = TextEditingController();
   TabController _tabController;
@@ -79,61 +82,75 @@ class _FrontOfficePageState extends State<FrontOfficePage>
                   )
                   .toList(),
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(children: [
-                TextFormField(
-                  controller: _numberFieldController,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Document number',
-                      labelStyle: Theme.of(context).textTheme.body1),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    RaisedButton(
-                      child: Text('Take picture'),
-                      color: Colors.blue,
-                      textColor: Colors.white,
-                      onPressed: () async {
-                        final imagePath = await Navigator.pushNamed(
-                          context,
-                          '/takePicture',
-                        );
-                        setState(() {
-                          _imagePath = imagePath;
+            ListView(
+              padding: EdgeInsets.all(16.0),
+              children: [
+              TextFormField(
+                controller: _numberFieldController,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Document number',
+                    labelStyle: Theme.of(context).textTheme.body1),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  ButtonBar(
+                    children: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.photo_camera),
+                        onPressed: () async => await _pickImageFromCamera(),
+                        tooltip: 'Shoot picture',
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.photo),
+                        onPressed: () async => await _pickImageFromGallery(),
+                        tooltip: 'Pick from gallery',
+                      ),
+                    ],
+                  ),
+                  // RaisedButton(
+                  //   child: Text('Take picture'),
+                  //   color: Colors.blue,
+                  //   textColor: Colors.white,
+                  //   onPressed: () async {
+                  //     final imagePath = await Navigator.pushNamed(
+                  //       context,
+                  //       '/takePicture',
+                  //     );
+                  //     setState(() {
+                  //       _imagePath = imagePath;
+                  //     });
+                  //   },
+                  // ),
+                  RaisedButton(
+                    child: Text('Add'),
+                    color: Colors.green,
+                    textColor: Colors.white,
+                    onPressed: () {
+                      setState(() {
+                        _rows.add({
+                          "ID": (int.parse(_rows[_rows.length - 1]["ID"]) + 1)
+                              .toString(),
+                          "Number": _numberFieldController.text,
+                          "ImagePath": _imageFile.path ?? ''
                         });
-                      },
-                    ),
-                    RaisedButton(
-                      child: Text('Add'),
-                      color: Colors.green,
-                      textColor: Colors.white,
-                      onPressed: () {
-                        setState(() {
-                          _rows.add({
-                            "ID": (int.parse(_rows[_rows.length - 1]["ID"]) + 1)
-                                .toString(),
-                            "Number": _numberFieldController.text,
-                            "ImagePath": _imagePath ?? ''
-                          });
 
-                          _numberFieldController.clear();
-                          _imagePath = null;
-                        });
-                        _tabController.animateTo(0);
-                      },
-                    ),
-                  ],
-                ),
-                _imagePath != null
-                    ? Expanded(
-                        child: Image.file(File(_imagePath)),
-                      )
-                    : Container(),
-              ]),
-            ),
+                        _numberFieldController.clear();
+                        _imagePath = null;
+                      });
+                      _tabController.animateTo(0);
+                    },
+                  ),
+                ],
+              ),            
+              _imagePath != null
+                  ? Expanded(
+                      child: Image.file(File(_imagePath)),
+                    )
+                  : Container(),
+              this._imageFile == null ? Container() : Image.file(_imageFile),
+            ]),
           ],
         ),
       ),
@@ -158,5 +175,17 @@ class _FrontOfficePageState extends State<FrontOfficePage>
       //   ),
       // ),
     );
+  }
+
+  Future<Null> _pickImageFromGallery() async {
+    final File imageFile =
+        await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() => this._imageFile = imageFile);
+  }
+
+  Future<Null> _pickImageFromCamera() async {
+    final File imageFile =
+        await ImagePicker.pickImage(source: ImageSource.camera);
+    setState(() => this._imageFile = imageFile);
   }
 }

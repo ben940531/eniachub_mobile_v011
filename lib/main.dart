@@ -24,6 +24,7 @@ void main() async {
   }
   final cameras = await availableCameras();
   _firstCamera = cameras.first;
+
   runApp(EniacHUBMobileApp());
 }
 
@@ -84,7 +85,7 @@ class EniacHUBMobileApp extends StatelessWidget {
             return MaterialPageRoute(builder: (context) {
               return FrontOfficePage(
                 name: args.companyName,
-                connectionId: args.gId,                
+                connectionId: args.gId,
               );
             });
           }
