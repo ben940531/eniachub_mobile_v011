@@ -4,14 +4,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService {
-  Future<String> _getVerificationTokenLocal() async {
+  final _apiBase = 'https://eniac-eniactest.azurewebsites.net/api/v1';
+
+  Future<String> getVerificationTokenLocal() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('verification_token');
   }
 
   Future<String> _getVerificationTokenServer(String verifyCode) async {
-    final response = await http.get(
-        'https://eniac-eniactest.azurewebsites.net/api/Verify?verifyCode=$verifyCode');
+    final url = '$_apiBase/Verify?verifyCode=$verifyCode';
+    print("verification url: $url");
+    final response = await http.get(url);
     if (response.statusCode == 200) {
       final body = json.decode(response.body);
       print("verify response body: $body");
@@ -32,11 +35,10 @@ class AuthService {
   }
 
   Future<bool> _authorizeToken(String verifyToken) async {
-    final response = await http.get(
-        'https://eniac-eniactest.azurewebsites.net/api/Authorize?authGid=$verifyToken');
+    final url = '$_apiBase/Authorize?authGid=$verifyToken';
+    print('authorize url: $url');
+    final response = await http.get(url);
     if (response.statusCode == 200) {
-      final body = json.decode(response.body);
-      print("authorize response body: $body");
       return true;
     } else {
       throw Exception('Cannot authorize verification token');
@@ -46,7 +48,7 @@ class AuthService {
   Future<bool> login(String verifyCode) async {
     String token;
     if (verifyCode == null) {
-      token = await _getVerificationTokenLocal();
+      token = await getVerificationTokenLocal();
     }
 
     if (token != null) {
@@ -56,8 +58,11 @@ class AuthService {
         print('authorize error: $e');
         return await Future<bool>.delayed(Duration(seconds: 2), () => false);
       }
-
       //return await Future<bool>.delayed(Duration(seconds: 2), () => true);
+    }
+
+    if (verifyCode == null) {
+      return false;
     }
 
     try {

@@ -1,3 +1,5 @@
+import 'package:eniachub_mobile_v011/classes/HomePageArgument.dart';
+import 'package:eniachub_mobile_v011/pages/home.dart';
 import 'package:eniachub_mobile_v011/services/authService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -12,6 +14,21 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _verificationTextController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    checkLogin();
+  }
+
+  Future<void> checkLogin() async {
+    bool _result = await authService.login(null);
+    if (_result) {
+      final authGid = await authService.getVerificationTokenLocal();
+      Navigator.pushNamed(context, HomePage.routeName,
+          arguments: HomePageArgument(authGid: authGid));
+    }
+  }
 
   Future<Null> signIn() async {
     if (_formKey.currentState.validate()) {
@@ -35,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
         EasyLoading.dismiss();
         _verificationTextController.clear();
         Navigator.pushNamed(context, '/home');
-      } else {        
+      } else {
         EasyLoading.showError('Failed to log in',
             duration: Duration(seconds: 3));
       }
@@ -111,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                           minWidth: MediaQuery.of(context).size.width,
                           child: RaisedButton(
                             onPressed: () {
-                              // Hide on screen keyboard                              
+                              // Hide on screen keyboard
                               FocusScope.of(context).requestFocus(FocusNode());
                               signIn();
                             },

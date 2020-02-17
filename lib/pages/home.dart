@@ -9,11 +9,17 @@ import 'package:http/http.dart' as http;
 AuthService _authService = new AuthService();
 
 class HomePage extends StatefulWidget {
+  static const routeName = '/home';
+  final String authGid;
+
+  const HomePage({this.authGid});
+
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  final _apiBase = 'https://eniac-eniactest.azurewebsites.net/api/v1';
   Future<Null> _signOut() async {
     var _result = await _authService.logout();
     if (_result) {
@@ -23,14 +29,12 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<String> fetchEntities() async {
-    final verifyToken = "2b1dbc1a-d0b0-4da5-8086-d35e1e1237f8";
-    final response = await http.get(
-        'https://eniac-eniactest.azurewebsites.net/api/Authorize?authGid=$verifyToken');
+  Future<String> fetchEntities() async {    
+    final response = await http.get('$_apiBase/Entities?authGid=${widget.authGid}');
     if (response.statusCode == 200) {
       final body = json.decode(response.body) as List<dynamic>;
-      print("authorize response body: $body");
-      var objects = body.map((b) {        
+      print("entities response body: $body");
+      var objects = body.map((b) {
         return Entity.fromJson(b);
       }).toList();
       setState(() {

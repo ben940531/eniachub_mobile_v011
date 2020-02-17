@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:eniachub_mobile_v011/classes/Entity.dart';
+import 'package:eniachub_mobile_v011/classes/HomePageArgument.dart';
 import 'package:eniachub_mobile_v011/pages/checkin.dart';
 import 'package:eniachub_mobile_v011/pages/company.dart';
 import 'package:eniachub_mobile_v011/pages/frontoffice.dart';
@@ -18,10 +19,10 @@ CameraDescription _firstCamera;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   _defaultHome = LoginPage();
-  bool _result = await authService.login(null);
-  if (_result) {
-    _defaultHome = HomePage(); //LoginPage();
-  }
+  // bool _result = await authService.login(null);
+  // if (_result) {
+  //   _defaultHome = LoginPage();
+  // }
   final cameras = await availableCameras();
   _firstCamera = cameras.first;
 
@@ -56,6 +57,15 @@ class EniacHUBMobileApp extends StatelessWidget {
         ),
         home: _defaultHome,
         onGenerateRoute: (settings) {
+          if (settings.name == HomePage.routeName) {
+            final HomePageArgument args = settings.arguments;
+            return MaterialPageRoute(builder: (context) {
+              return HomePage(
+                authGid: args.authGid,
+              );
+            });
+          }
+
           final Entity args = settings.arguments;
           if (settings.name == CompanyPage.routeName) {
             return MaterialPageRoute(builder: (context) {
@@ -92,8 +102,7 @@ class EniacHUBMobileApp extends StatelessWidget {
           return null;
         },
         routes: <String, WidgetBuilder>{
-          '/login': (BuildContext context) => LoginPage(),
-          '/home': (BuildContext context) => HomePage(),
+          '/login': (BuildContext context) => LoginPage(),          
           '/takePicture': (BuildContext context) => TakePicturePage(
                 camera: _firstCamera,
               ),
