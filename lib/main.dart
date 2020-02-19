@@ -1,12 +1,10 @@
 import 'package:camera/camera.dart';
 import 'package:eniachub_mobile_v011/classes/Entity.dart';
 import 'package:eniachub_mobile_v011/classes/HomePageArgument.dart';
-import 'package:eniachub_mobile_v011/pages/checkin.dart';
 import 'package:eniachub_mobile_v011/pages/company.dart';
 import 'package:eniachub_mobile_v011/pages/frontoffice.dart';
 import 'package:eniachub_mobile_v011/pages/home.dart';
 import 'package:eniachub_mobile_v011/pages/login.dart';
-import 'package:eniachub_mobile_v011/pages/personal.dart';
 import 'package:eniachub_mobile_v011/pages/takepicture.dart';
 import 'package:eniachub_mobile_v011/services/authService.dart';
 import 'package:flutter/material.dart';
@@ -70,24 +68,10 @@ class EniacHUBMobileApp extends StatelessWidget {
           if (settings.name == CompanyPage.routeName) {
             return MaterialPageRoute(builder: (context) {
               return CompanyPage(
-                name: args.companyName,
-                connectionId: args.gId,
-              );
-            });
-          }
-          if (settings.name == PersonalPage.routeName) {
-            return MaterialPageRoute(builder: (context) {
-              return PersonalPage(
-                name: args.companyName,
-                connectionId: args.gId,
-              );
-            });
-          }
-          if (settings.name == CheckInPage.routeName) {
-            return MaterialPageRoute(builder: (context) {
-              return CheckInPage(
-                name: args.companyName,
-                connectionId: args.gId,
+                companyName: args.companyName,
+                gId: args.gId,
+                connections: args.connections,
+                spBase: args.spBase,
               );
             });
           }
@@ -102,7 +86,7 @@ class EniacHUBMobileApp extends StatelessWidget {
           return null;
         },
         routes: <String, WidgetBuilder>{
-          '/login': (BuildContext context) => LoginPage(),          
+          '/login': (BuildContext context) => LoginPage(),
           '/takePicture': (BuildContext context) => TakePicturePage(
                 camera: _firstCamera,
               ),

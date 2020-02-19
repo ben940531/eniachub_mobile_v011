@@ -1,18 +1,22 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:eniachub_mobile_v011/classes/Entity.dart';
 import 'package:eniachub_mobile_v011/pages/frontoffice.dart';
-import 'package:eniachub_mobile_v011/pages/personal.dart';
+import 'package:eniachub_mobile_v011/widgets/checkIn.dart';
 import 'package:flutter/material.dart';
 
-class CompanyPage extends StatelessWidget {
+class CompanyPage extends StatefulWidget {
   static const routeName = '/company';
-  final String connectionId;
-  final String name;
+  final String gId;
+  final String companyName;
+  final StoredProcBase spBase;
+  final List<Connection> connections;
 
   const CompanyPage({
     Key key,
-    @required this.name,
-    @required this.connectionId,
+    @required this.companyName,
+    @required this.gId,
+    @required this.spBase,
+    @required this.connections,
   }) : super(key: key);
 
   static List<charts.Series<LinearSales, int>> _createSampleData() {
@@ -35,14 +39,43 @@ class CompanyPage extends StatelessWidget {
   }
 
   @override
+  _CompanyPageState createState() => _CompanyPageState();
+}
+
+class _CompanyPageState extends State<CompanyPage>
+    with SingleTickerProviderStateMixin {
+  TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Company dashboard'),
         backgroundColor: Colors.blue[500],
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: <Widget>[
+            Tab(icon: Icon(Icons.pie_chart)),
+            Tab(icon: Icon(Icons.timer)),
+          ],
+        ),
       ),
       drawer: Drawer(
-        child: ListView(
+        child: //ListView.builder(
+            //       itemCount: connections.length,
+            //       itemBuilder: (BuildContext context, int index) {
+            //         return ListTile(
+            //           title: Text(connections[index].name),
+            //         );
+            //       },
+            //     ),
+            ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
@@ -51,8 +84,8 @@ class CompanyPage extends StatelessWidget {
                   Positioned(
                     bottom: 12.0,
                     child: Text(
-                      this.name,
-                      style: TextStyle(color: Colors.white,fontSize: 18.0),
+                      this.widget.companyName,
+                      style: TextStyle(color: Colors.white, fontSize: 18.0),
                     ),
                   )
                 ],
@@ -67,65 +100,68 @@ class CompanyPage extends StatelessWidget {
                   Navigator.pop(context);
                 }),
             ListTile(
-              title: Text('Personal functions'),
+              title: Text('Front office functions'),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(
                   context,
-                  PersonalPage.routeName,
-                  arguments: Entity(companyName: this.name, gId: this.connectionId),
+                  FrontOfficePage.routeName,
+                  arguments: Entity(
+                      companyName: this.widget.companyName,
+                      gId: this.widget.gId),
                 );
               },
             ),
             ListTile(
-              title: Text('Front office functions'),
+              title: Text('Back to previous page'),
               onTap: () {
                 Navigator.pop(context);
-                  Navigator.pushNamed(
-                  context,
-                  FrontOfficePage.routeName,
-                  arguments: Entity(companyName: this.name, gId: this.connectionId),
-                );
+                Navigator.pop(context);
               },
             ),
           ],
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 20.0),
-        child: PageView(scrollDirection: Axis.vertical, children: [
-          Column(
-            children: <Widget>[
-              Text(
-                'Sales chart',
-                style: Theme.of(context).textTheme.display1,
-              ),
-              Expanded(
-                child: charts.PieChart(
-                  _createSampleData(),
-                  animate: true,
-                  defaultRenderer: new charts.ArcRendererConfig(
-                      arcRendererDecorators: [new charts.ArcLabelDecorator()]),
+      body: TabBarView(controller: _tabController, children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: PageView(scrollDirection: Axis.vertical, children: [
+            Column(
+              children: <Widget>[
+                Text(
+                  'Sales chart',
+                  style: Theme.of(context).textTheme.display1,
                 ),
-              ),
-            ],
-          ),
-          Column(
-            children: <Widget>[
-              Text(
-                'Doc chart',
-                style: Theme.of(context).textTheme.display1,
-              ),
-              Expanded(
-                child: charts.LineChart(
-                  _createSampleData(),
-                  animate: true,
+                Expanded(
+                  child: charts.PieChart(
+                    CompanyPage._createSampleData(),
+                    animate: true,
+                    defaultRenderer: new charts.ArcRendererConfig(
+                        arcRendererDecorators: [
+                          new charts.ArcLabelDecorator()
+                        ]),
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ]),
-      ),
+              ],
+            ),
+            Column(
+              children: <Widget>[
+                Text(
+                  'Doc chart',
+                  style: Theme.of(context).textTheme.display1,
+                ),
+                Expanded(
+                  child: charts.LineChart(
+                    CompanyPage._createSampleData(),
+                    animate: true,
+                  ),
+                ),
+              ],
+            ),
+          ]),
+        ),
+        CheckIn(spBase: widget.spBase),
+      ]),
     );
   }
 }
