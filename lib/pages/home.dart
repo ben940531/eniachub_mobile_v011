@@ -10,9 +10,8 @@ AuthService _authService = new AuthService();
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home';
-  final String authGid;
 
-  const HomePage({this.authGid});
+  const HomePage();
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -20,6 +19,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _apiBase = 'https://eniac-eniactest.azurewebsites.net/api/v1';
+  bool _entitiesFetched = false;
   Future<Null> _signOut() async {
     var _result = await _authService.logout();
     if (_result) {
@@ -29,8 +29,9 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<String> fetchEntities() async {    
-    final response = await http.get('$_apiBase/Entities?authGid=${widget.authGid}');
+  Future<String> fetchEntities() async {
+    final authGid = await _authService.getVerificationTokenLocal();
+    final response = await http.get('$_apiBase/Entities?authGid=$authGid');
     if (response.statusCode == 200) {
       final body = json.decode(response.body) as List<dynamic>;
       print("entities response body: $body");
@@ -39,9 +40,14 @@ class _HomePageState extends State<HomePage> {
       }).toList();
       setState(() {
         entities = objects;
+        _entitiesFetched = true;
       });
       return "Success";
     } else {
+      setState(() {
+        //in order to stop circularprogressindicator
+        _entitiesFetched = true;
+      });
       throw Exception('Cannot load entities');
     }
   }
@@ -51,6 +57,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    _entitiesFetched = false;
     fetchEntities();
   }
 
@@ -98,42 +105,44 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: WillPopScope(
-          child: Row(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.only(top: 80),
-                  itemCount: entities != null ? entities.length : 0,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: RaisedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                            context,
-                            CompanyPage.routeName,
-                            arguments: entities[index],
-                          );
-                        },
-                        color: Colors.blue,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Text(
-                            entities[index].companyName,
-                            style: Theme.of(context).textTheme.button,
+      body: _entitiesFetched
+          ? WillPopScope(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      padding: const EdgeInsets.only(top: 80),
+                      itemCount: entities != null ? entities.length : 0,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: RaisedButton(
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                context,
+                                CompanyPage.routeName,
+                                arguments: entities[index],
+                              );
+                            },
+                            color: Colors.blue,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Text(
+                                entities[index].companyName,
+                                style: Theme.of(context).textTheme.button,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              )
-            ],
-          ),
-          onWillPop: _onBackPress),
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
+              onWillPop: _onBackPress)
+          : Center(child: CircularProgressIndicator()),
     );
   }
 }

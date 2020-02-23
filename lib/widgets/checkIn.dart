@@ -1,61 +1,64 @@
 import 'dart:convert';
 
+import 'package:eniachub_mobile_v011/classes/CheckInAPI.dart';
+import 'package:eniachub_mobile_v011/classes/CheckInStatusAPI.dart';
 import 'package:eniachub_mobile_v011/classes/Entity.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-
-class CheckInAPI extends StoredProcBase {
-  final bool inOut;
-
-  const CheckInAPI(
-      {this.inOut,
-      String databaseName,
-      String serverName,
-      String apiServer,
-      int currentBuild,
-      String connectionId})
-      : super(
-          currentBuild: currentBuild,
-          databaseName: databaseName,
-          serverName: serverName,
-          apiServer: apiServer,
-          connectionId: connectionId,
-        );
-}
 
 class CheckIn extends StatefulWidget {
   final StoredProcBase spBase;
 
-  const CheckIn({this.spBase});
+  CheckIn({this.spBase});
 
   @override
   _CheckInState createState() => _CheckInState();
 }
 
 class _CheckInState extends State<CheckIn> {
-  String _checkInStatus = 'undefined';
+  String _checkInStatus = "undefined";
+  CheckInAPI checkInAPI;
+  CheckInStatusAPI checkInStatusAPI;
 
-  Future<void> _checkIn(bool inOut) async {
-    CheckInAPI checkInAPI = CheckInAPI(
-      inOut: inOut,
-      currentBuild: widget.spBase.currentBuild,
-      databaseName: widget.spBase.databaseName,
-      serverName: widget.spBase.serverName,
-      apiServer: widget.spBase.apiServer,
-      connectionId: widget.spBase.connectionId,
+  Future<StoredProcResponseBase> _checkIn(bool inOut) async {
+    checkInAPI.inOut = inOut;
+    try {
+      String body = await checkInAPI.getResponse();
+      print('check in api repsonse: $body');
+      return StoredProcResponseBase.fromJson(json.decode(body));
+    } catch (ex) {
+      throw ex;
+    }
+  }
+
+  Future<void> _getCheckInStatus() async {
+    try {
+      String body = await checkInStatusAPI.getResponse();
+      print('check in status api repsonse: $body');
+      setState(() {
+        _checkInStatus = json.decode(body)["Status"];
+      });
+    } catch (ex) {
+      throw ex;
+    }
+  }
+
+  void _showSnackBar(BuildContext context, StoredProcResponseBase response) {
+    final snackBar = SnackBar(
+      content: Text(response.errorMsg),
+      backgroundColor: response.rc == 0 ? Colors.green : Colors.red,
     );
 
-    String url = widget.spBase.apiServer + 'pEBP_Work_CheckInOut';
-    Map<String, String> headers = {"Content-type": "application/json"};
-    String jsonbody = json.encode(checkInAPI);
+    // Find the Scaffold in the widget tree and use
+    // it to show a SnackBar.
+    Scaffold.of(context).showSnackBar(snackBar);
+  }
 
-    http.Response response =
-        await http.post(url, headers: headers, body: jsonbody);
-    if (response.statusCode == 200) {
-      print('check in api repsonse: ${response.body}');
-    } else {
-      throw Exception('Cannot call API');
-    }
+  @override
+  void initState() {
+    super.initState();
+    checkInAPI = CheckInAPI(widget.spBase);
+    checkInStatusAPI = CheckInStatusAPI(widget.spBase);
+    _getCheckInStatus();
   }
 
   @override
@@ -91,10 +94,12 @@ class _CheckInState extends State<CheckIn> {
                   color: Colors.green,
                   textColor: Colors.white,
                   onPressed: () async {
-                    await _checkIn(true);
+                    var checkIn = await _checkIn(true);
                     setState(() {
                       _checkInStatus = 'Checked in';
                     });
+
+                   _showSnackBar(context, checkIn);
                   },
                 ),
               ),
@@ -107,10 +112,11 @@ class _CheckInState extends State<CheckIn> {
                   color: Colors.red,
                   textColor: Colors.white,
                   onPressed: () async {
-                    await _checkIn(false);
+                    var checkIn = await _checkIn(false);
                     setState(() {
                       _checkInStatus = 'Checked out';
                     });
+                    _showSnackBar(context, checkIn);
                   },
                 ),
               ),

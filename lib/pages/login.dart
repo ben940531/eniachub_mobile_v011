@@ -1,4 +1,3 @@
-import 'package:eniachub_mobile_v011/classes/HomePageArgument.dart';
 import 'package:eniachub_mobile_v011/pages/home.dart';
 import 'package:eniachub_mobile_v011/services/authService.dart';
 import 'package:flutter/material.dart';
@@ -18,15 +17,16 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    checkLogin();
+    //checkLogin();
   }
 
   Future<void> checkLogin() async {
     bool _result = await authService.login(null);
     if (_result) {
-      final authGid = await authService.getVerificationTokenLocal();
-      Navigator.pushNamed(context, HomePage.routeName,
-          arguments: HomePageArgument(authGid: authGid));
+      Navigator.pushNamed(
+        context,
+        HomePage.routeName,
+      );
     }
   }
 

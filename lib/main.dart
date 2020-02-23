@@ -1,6 +1,5 @@
 import 'package:camera/camera.dart';
 import 'package:eniachub_mobile_v011/classes/Entity.dart';
-import 'package:eniachub_mobile_v011/classes/HomePageArgument.dart';
 import 'package:eniachub_mobile_v011/pages/company.dart';
 import 'package:eniachub_mobile_v011/pages/frontoffice.dart';
 import 'package:eniachub_mobile_v011/pages/home.dart';
@@ -17,10 +16,10 @@ CameraDescription _firstCamera;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   _defaultHome = LoginPage();
-  // bool _result = await authService.login(null);
-  // if (_result) {
-  //   _defaultHome = LoginPage();
-  // }
+  bool _result = await authService.login(null);
+  if (_result) {
+    _defaultHome = HomePage();
+  }
   final cameras = await availableCameras();
   _firstCamera = cameras.first;
 
@@ -55,14 +54,14 @@ class EniacHUBMobileApp extends StatelessWidget {
         ),
         home: _defaultHome,
         onGenerateRoute: (settings) {
-          if (settings.name == HomePage.routeName) {
-            final HomePageArgument args = settings.arguments;
-            return MaterialPageRoute(builder: (context) {
-              return HomePage(
-                authGid: args.authGid,
-              );
-            });
-          }
+          // if (settings.name == HomePage.routeName) {
+          //   final HomePageArgument args = settings.arguments;
+          //   return MaterialPageRoute(builder: (context) {
+          //     return HomePage(
+          //       authGid: args.authGid,
+          //     );
+          //   });
+          // }
 
           final Entity args = settings.arguments;
           if (settings.name == CompanyPage.routeName) {
@@ -87,6 +86,7 @@ class EniacHUBMobileApp extends StatelessWidget {
         },
         routes: <String, WidgetBuilder>{
           '/login': (BuildContext context) => LoginPage(),
+          '/home': (BuildContext context) => HomePage(),
           '/takePicture': (BuildContext context) => TakePicturePage(
                 camera: _firstCamera,
               ),

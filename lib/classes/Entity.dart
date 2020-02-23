@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 class Entity {
   Entity({this.companyName, this.gId, this.connections, this.spBase});
 
@@ -41,14 +44,20 @@ class StoredProcBase {
   final String serverName;
   final String apiServer;
   final String connectionId;
+  String apiUrl;
 
-  const StoredProcBase({
+  StoredProcBase({
+    String url,
     this.currentBuild,
     this.databaseName,
     this.serverName,
     this.apiServer,
     this.connectionId,
-  });
+  }) {
+    if (url != null) {
+      apiUrl = apiServer + url;
+    }
+  }
 
   factory StoredProcBase.fromJson(Map<String, dynamic> json) {
     return StoredProcBase(
@@ -67,4 +76,31 @@ class StoredProcBase {
         'apiServer': apiServer,
         'connectionId': connectionId,
       };
+
+  Future<String> getResponse() async {
+    Map<String, String> headers = {"Content-type": "application/json"};
+    String jsonbody = json.encode(this);
+    print(jsonbody);
+    http.Response response =
+        await http.post(apiUrl, headers: headers, body: jsonbody);
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception("Cannot call API");
+    }
+  }
+}
+
+class StoredProcResponseBase {
+  final int rc;
+  final String errorMsg;
+
+  StoredProcResponseBase(this.rc, this.errorMsg);
+
+  factory StoredProcResponseBase.fromJson(Map<String, dynamic> json) {
+    return StoredProcResponseBase(
+      json['RC'],
+      json['ErrorMsg'],
+    );
+  }
 }
