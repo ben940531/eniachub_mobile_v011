@@ -1,4 +1,5 @@
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:eniachub_mobile_v011/classes/ChartEntity.dart';
 import 'package:eniachub_mobile_v011/classes/Entity.dart';
 import 'package:eniachub_mobile_v011/pages/frontoffice.dart';
 import 'package:eniachub_mobile_v011/widgets/checkIn.dart';
@@ -45,11 +46,24 @@ class CompanyPage extends StatefulWidget {
 class _CompanyPageState extends State<CompanyPage>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
+  charts.BarChart _barChart;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    _getChart();
+  }
+
+  Future<void> _getChart() async {
+    await Future<void>.delayed(Duration(seconds: 2), () {
+      setState(() {
+        _barChart = charts.BarChart(
+          ChartEntity.createSampleData(),
+          animate: true,
+        );
+      });
+    });
   }
 
   @override
@@ -126,24 +140,19 @@ class _CompanyPageState extends State<CompanyPage>
         Padding(
           padding: const EdgeInsets.only(top: 20.0),
           child: PageView(scrollDirection: Axis.vertical, children: [
-            Column(
-              children: <Widget>[
-                Text(
-                  'Sales chart',
-                  style: Theme.of(context).textTheme.display1,
-                ),
-                Expanded(
-                  child: charts.PieChart(
-                    CompanyPage._createSampleData(),
-                    animate: true,
-                    defaultRenderer: new charts.ArcRendererConfig(
-                        arcRendererDecorators: [
-                          new charts.ArcLabelDecorator()
-                        ]),
-                  ),
-                ),
-              ],
-            ),
+            _barChart != null
+                ? Column(
+                    children: <Widget>[
+                      Text(
+                        'Presence',
+                        style: Theme.of(context).textTheme.display1,
+                      ),
+                      Expanded(
+                        child: _barChart,
+                      ),
+                    ],
+                  )
+                : Center(child: CircularProgressIndicator()),
             Column(
               children: <Widget>[
                 Text(
