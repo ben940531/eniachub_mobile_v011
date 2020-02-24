@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:eniachub_mobile_v011/classes/Entity.dart';
+import 'package:eniachub_mobile_v011/classes/PushNotification.dart';
 import 'package:eniachub_mobile_v011/pages/company.dart';
 import 'package:eniachub_mobile_v011/pages/frontoffice.dart';
 import 'package:eniachub_mobile_v011/pages/home.dart';
@@ -23,6 +24,7 @@ void main() async {
   final cameras = await availableCameras();
   _firstCamera = cameras.first;
 
+  await PushNotificationManager().init();
   runApp(EniacHUBMobileApp());
 }
 
