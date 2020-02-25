@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "955776215037",
+    "firebase_url": "https://eniachub-mobile.firebaseio.com",
+    "project_id": "eniachub-mobile",
+    "storage_bucket": "eniachub-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:955776215037:android:d8090faa2282884b981b94",
+        "android_client_info": {
+          "package_name": "com.eniaccomputing.eniachub_mobile_v011"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "955776215037-u14ud9i77fcmtje8c644u1tf69s1agln.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVKXTsxPW-rna74S2zO-0Pnb1avzwSmm0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "955776215037-u14ud9i77fcmtje8c644u1tf69s1agln.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
