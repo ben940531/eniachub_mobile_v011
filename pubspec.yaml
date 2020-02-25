@@ -30,9 +30,9 @@ dependencies:
   http: ^0.12.0+4
   image_picker: ^0.6.3+1
   firebase_messaging: ^6.0.9
-  camera:
   path_provider:
   path:
+  # camera:
   # video_player: ^0.10.7
 
 

@@ -1,18 +1,15 @@
-import 'package:camera/camera.dart';
 import 'package:eniachub_mobile_v011/classes/Entity.dart';
 import 'package:eniachub_mobile_v011/classes/PushNotification.dart';
 import 'package:eniachub_mobile_v011/pages/company.dart';
 import 'package:eniachub_mobile_v011/pages/frontoffice.dart';
 import 'package:eniachub_mobile_v011/pages/home.dart';
 import 'package:eniachub_mobile_v011/pages/login.dart';
-import 'package:eniachub_mobile_v011/pages/takepicture.dart';
 import 'package:eniachub_mobile_v011/services/authService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 AuthService authService = new AuthService();
 Widget _defaultHome;
-CameraDescription _firstCamera;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,9 +17,7 @@ void main() async {
   bool _result = await authService.login(null);
   if (_result) {
     _defaultHome = HomePage();
-  }
-  final cameras = await availableCameras();
-  _firstCamera = cameras.first;
+  }    
 
   await PushNotificationManager().init();
   runApp(EniacHUBMobileApp());
@@ -88,10 +83,7 @@ class EniacHUBMobileApp extends StatelessWidget {
         },
         routes: <String, WidgetBuilder>{
           '/login': (BuildContext context) => LoginPage(),
-          '/home': (BuildContext context) => HomePage(),
-          '/takePicture': (BuildContext context) => TakePicturePage(
-                camera: _firstCamera,
-              ),
+          '/home': (BuildContext context) => HomePage(),          
         },
       ),
     );
