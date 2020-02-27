@@ -87,11 +87,20 @@ class _HomePageState extends State<HomePage> {
                     onPressed: () {
                       Navigator.of(context).pop();
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => WebViewerPage(message['data']['url'])));
+                          builder: (context) =>
+                              WebViewerPage(message['data']['url'])));
                     },
                   ),
                 ],
               ));
+    }, onLaunch: (Map<String, dynamic> message) async {
+      print("onLaunch: $message");
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => WebViewerPage(message['data']['url'])));
+    }, onResume: (Map<String, dynamic> message) async {
+      print("onResume: $message");
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => WebViewerPage(message['data']['url'])));
     });
   }
 

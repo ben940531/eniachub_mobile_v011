@@ -11,6 +11,7 @@ class WebViewerPage extends StatefulWidget {
   @override
   _WebViewerPageState createState() => _WebViewerPageState();
 }
+
 //https://www.youtube.com/watch?v=Wo0o0wSkn4k
 class _WebViewerPageState extends State<WebViewerPage> {
   final Completer<WebViewController> _controller =
@@ -21,13 +22,27 @@ class _WebViewerPageState extends State<WebViewerPage> {
       appBar: AppBar(
         title: Text('Web viewer'),
       ),
-      body: WebView(
-        initialUrl: widget.url,
-        javascriptMode: JavascriptMode.unrestricted,
-        onWebViewCreated: (WebViewController webViewController) {
-          _controller.complete(webViewController);
+      body: FutureBuilder<WebViewController>(
+        future: _controller.future,
+        builder: (BuildContext context,
+            AsyncSnapshot<WebViewController> controller) {
+          if (controller.hasData) {
+            return WebView(
+              initialUrl: widget.url,
+              javascriptMode: JavascriptMode.unrestricted,
+              onWebViewCreated: (WebViewController webViewController) {
+                _controller.complete(webViewController);
+              },
+            );
+          }
+          return Container(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
         },
       ),
+
       // floatingActionButton: FutureBuilder<WebViewController>(
       //   future: _controller.future,
       //   builder: (BuildContext context,
