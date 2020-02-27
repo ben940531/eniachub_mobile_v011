@@ -16,31 +16,37 @@ class WebViewerPage extends StatefulWidget {
 class _WebViewerPageState extends State<WebViewerPage> {
   final Completer<WebViewController> _controller =
       Completer<WebViewController>();
+  var _stackToView = 1;
+
+  void _handleLoad(String value) {
+    setState(() {
+      _stackToView = 0;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Web viewer'),
       ),
-      body: FutureBuilder<WebViewController>(
-        future: _controller.future,
-        builder: (BuildContext context,
-            AsyncSnapshot<WebViewController> controller) {
-          if (controller.hasData) {
-            return WebView(
-              initialUrl: widget.url,
-              javascriptMode: JavascriptMode.unrestricted,
-              onWebViewCreated: (WebViewController webViewController) {
-                _controller.complete(webViewController);
-              },
-            );
-          }
-          return Container(
+      body: IndexedStack(
+        index: _stackToView,
+        children: <Widget>[
+          WebView(
+            initialUrl: widget.url,
+            onPageFinished: _handleLoad,
+            javascriptMode: JavascriptMode.unrestricted,
+            onWebViewCreated: (WebViewController webViewController) {
+              _controller.complete(webViewController);
+            },
+          ),
+          Container(
             child: Center(
               child: CircularProgressIndicator(),
             ),
-          );
-        },
+          ),
+        ],
       ),
 
       // floatingActionButton: FutureBuilder<WebViewController>(
