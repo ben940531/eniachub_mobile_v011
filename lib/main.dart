@@ -1,5 +1,4 @@
 import 'package:eniachub_mobile_v011/classes/Entity.dart';
-import 'package:eniachub_mobile_v011/classes/PushNotification.dart';
 import 'package:eniachub_mobile_v011/pages/company.dart';
 import 'package:eniachub_mobile_v011/pages/frontoffice.dart';
 import 'package:eniachub_mobile_v011/pages/home.dart';
@@ -13,13 +12,13 @@ Widget _defaultHome;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  _defaultHome = LoginPage();
+  _defaultHome = LoginPage();  
+
   bool _result = await authService.login(null);
   if (_result) {
     _defaultHome = HomePage();
-  }    
+  }
 
-  await PushNotificationManager().init();
   runApp(EniacHUBMobileApp());
 }
 
@@ -83,7 +82,7 @@ class EniacHUBMobileApp extends StatelessWidget {
         },
         routes: <String, WidgetBuilder>{
           '/login': (BuildContext context) => LoginPage(),
-          '/home': (BuildContext context) => HomePage(),          
+          '/home': (BuildContext context) => HomePage(),
         },
       ),
     );

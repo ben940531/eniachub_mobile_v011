@@ -1,4 +1,3 @@
-import 'package:eniachub_mobile_v011/pages/home.dart';
 import 'package:eniachub_mobile_v011/services/authService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -20,15 +19,15 @@ class _LoginPageState extends State<LoginPage> {
     //checkLogin();
   }
 
-  Future<void> checkLogin() async {
-    bool _result = await authService.login(null);
-    if (_result) {
-      Navigator.pushNamed(
-        context,
-        HomePage.routeName,
-      );
-    }
-  }
+  // Future<void> checkLogin() async {
+  //   bool _result = await authService.login(null);
+  //   if (_result) {
+  //     Navigator.pushNamed(
+  //       context,
+  //       HomePage.routeName,
+  //     );
+  //   }
+  // }
 
   Future<Null> signIn() async {
     if (_formKey.currentState.validate()) {
@@ -41,6 +40,7 @@ class _LoginPageState extends State<LoginPage> {
       // });
 
       EasyLoading.show(status: 'Loading');
+
       // Log in
       var _result = await authService.login(_verificationTextController.text);
       // After logging in

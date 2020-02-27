@@ -6,7 +6,8 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugins.GeneratedPluginRegistrant
 
 class MainActivity: FlutterActivity() {
-    override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
+    //this is commented because of double registration according to this thread https://github.com/FirebaseExtended/flutterfire/issues/1669 firebase messages configuration called multiple times
+    /*override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         GeneratedPluginRegistrant.registerWith(flutterEngine);
-    }
+    }*/
 }

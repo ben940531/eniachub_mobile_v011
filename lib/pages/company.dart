@@ -1,5 +1,5 @@
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:eniachub_mobile_v011/classes/ChartEntity.dart';
+import 'package:eniachub_mobile_v011/classes/chart_entity.dart';
 import 'package:eniachub_mobile_v011/classes/Entity.dart';
 import 'package:eniachub_mobile_v011/pages/frontoffice.dart';
 import 'package:eniachub_mobile_v011/widgets/checkIn.dart';

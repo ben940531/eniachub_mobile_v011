@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:eniachub_mobile_v011/classes/CheckInAPI.dart';
-import 'package:eniachub_mobile_v011/classes/CheckInStatusAPI.dart';
+import 'package:eniachub_mobile_v011/classes/check_in_api.dart';
+import 'package:eniachub_mobile_v011/classes/check_in_status_api.dart';
 import 'package:eniachub_mobile_v011/classes/Entity.dart';
 import 'package:flutter/material.dart';
 

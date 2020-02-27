@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:eniachub_mobile_v011/classes/Entity.dart';
+import 'package:eniachub_mobile_v011/classes/firebase_notification_handler.dart';
 import 'package:eniachub_mobile_v011/pages/company.dart';
 import 'package:eniachub_mobile_v011/services/authService.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 AuthService _authService = new AuthService();
+FirebaseNotificationManager _fcmManager = FirebaseNotificationManager();
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home';
@@ -38,6 +40,14 @@ class _HomePageState extends State<HomePage> {
       var objects = body.map((b) {
         return Entity.fromJson(b);
       }).toList();
+      if (objects.length == 1) {
+        Navigator.pushNamed(
+          context,
+          CompanyPage.routeName,
+          arguments: entities[0],
+        );
+      }
+
       setState(() {
         entities = objects;
         _entitiesFetched = true;
@@ -59,6 +69,25 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _entitiesFetched = false;
     fetchEntities();
+
+    _fcmManager.firebaseMessaging.configure(
+        onMessage: (Map<String, dynamic> message) async {
+      print("onmessage: $message");
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                content: ListTile(
+                  title: Text(message['notification']['title']),
+                  subtitle: Text(message['notification']['body']),
+                ),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('OK'),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
+              ));
+    });
   }
 
   // List<Entity> _widgetList = [
