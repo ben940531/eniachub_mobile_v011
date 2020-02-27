@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:eniachub_mobile_v011/classes/Entity.dart';
 import 'package:eniachub_mobile_v011/classes/firebase_notification_handler.dart';
 import 'package:eniachub_mobile_v011/pages/company.dart';
+import 'package:eniachub_mobile_v011/pages/webviewer.dart';
 import 'package:eniachub_mobile_v011/services/authService.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -83,7 +84,11 @@ class _HomePageState extends State<HomePage> {
                 actions: <Widget>[
                   FlatButton(
                     child: Text('OK'),
-                    onPressed: () => Navigator.of(context).pop(),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => WebViewerPage(message['data']['url'])));
+                    },
                   ),
                 ],
               ));

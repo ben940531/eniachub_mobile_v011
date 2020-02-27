@@ -32,6 +32,7 @@ dependencies:
   firebase_messaging: ^6.0.9
   path_provider:
   path:
+  webview_flutter: ^0.3.19+8
   # camera:
   # video_player: ^0.10.7
 
