@@ -167,6 +167,9 @@ class _HomePageState extends State<HomePage> {
                       itemBuilder: (BuildContext context, int index) {
                         return Card(
                           child: ListTile(
+                            leading: entities[index].logoPath == null
+                                ? FlutterLogo()
+                                : Image.network(entities[index].logoPath),
                             title: Text(entities[index].companyName),
                             trailing: Icon(
                               Icons.keyboard_arrow_right,

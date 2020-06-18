@@ -3,6 +3,7 @@ import 'package:eniachub_mobile_v011/classes/chart_entity.dart';
 import 'package:eniachub_mobile_v011/classes/Entity.dart';
 import 'package:eniachub_mobile_v011/pages/frontoffice.dart';
 import 'package:eniachub_mobile_v011/widgets/checkIn.dart';
+import 'package:eniachub_mobile_v011/widgets/document_flow.dart';
 import 'package:flutter/material.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
@@ -53,7 +54,7 @@ class _CompanyPageState extends State<CompanyPage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     _getChart();
   }
 
@@ -79,6 +80,7 @@ class _CompanyPageState extends State<CompanyPage>
           tabs: <Widget>[
             Tab(icon: Icon(Icons.pie_chart)),
             Tab(icon: Icon(Icons.timer)),
+            Tab(icon: Icon(Icons.folder)),
           ],
         ),
       ),
@@ -178,6 +180,9 @@ class _CompanyPageState extends State<CompanyPage>
           ]),
         ),
         CheckIn(spBase: widget.spBase),
+        Container(
+          child: DocumentFlow(),
+        ),
       ]),
     );
   }

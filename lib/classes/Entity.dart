@@ -2,17 +2,25 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class Entity {
-  Entity({this.companyName, this.gId, this.connections, this.spBase});
+  Entity({
+    this.companyName,
+    this.gId,
+    this.connections,
+    this.spBase,
+    this.logoPath,
+  });
 
   final String companyName;
   final String gId;
   final List<Connection> connections;
   final StoredProcBase spBase;
+  final String logoPath;
 
   factory Entity.fromJson(Map<String, dynamic> json) {
     return Entity(
         companyName: json['companyName'],
         gId: json['gId'],
+        logoPath: json['logoPath'],
         spBase: StoredProcBase.fromJson(json['spBase']),
         connections: json['connections'] != null
             ? List<Connection>.from((json['connections'] as Iterable<dynamic>)
