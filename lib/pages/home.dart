@@ -7,6 +7,8 @@ import 'package:eniachub_mobile_v011/pages/webviewer.dart';
 import 'package:eniachub_mobile_v011/services/authService.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:loading/indicator/ball_pulse_indicator.dart';
+import 'package:loading/loading.dart';
 
 AuthService _authService = new AuthService();
 FirebaseNotificationManager _fcmManager = FirebaseNotificationManager();
@@ -23,12 +25,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final _apiBase = 'https://eniac-eniactest.azurewebsites.net/api/v1';
   bool _entitiesFetched = false;
+  int _selectedIndex = 0;
   Future<Null> _signOut() async {
     var _result = await _authService.logout();
     if (_result) {
       //go back to login page
-      Navigator.popUntil(
-          context, ModalRoute.withName(Navigator.defaultRouteName));
+      Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
     }
   }
 
@@ -64,6 +66,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   List<Entity> entities;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   void initState() {
@@ -157,25 +165,17 @@ class _HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.only(top: 80),
                       itemCount: entities != null ? entities.length : 0,
                       itemBuilder: (BuildContext context, int index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: RaisedButton(
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                context,
-                                CompanyPage.routeName,
-                                arguments: entities[index],
-                              );
-                            },
-                            color: Colors.blue,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: Text(
-                                entities[index].companyName,
-                                style: Theme.of(context).textTheme.button,
-                              ),
+                        return Card(
+                          child: ListTile(
+                            title: Text(entities[index].companyName),
+                            trailing: Icon(
+                              Icons.keyboard_arrow_right,
+                              color: Colors.blue,
+                            ),
+                            onTap: () => Navigator.pushNamed(
+                              context,
+                              CompanyPage.routeName,
+                              arguments: entities[index],
                             ),
                           ),
                         );
@@ -185,7 +185,28 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               onWillPop: _onBackPress)
-          : Center(child: CircularProgressIndicator()),
+          : Center(
+              child: Loading(
+                color: Colors.blue,
+                indicator: BallPulseIndicator(),
+                size: 100.0,
+              ),
+            ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Accesses'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.ac_unit),
+            title: Text('Services'),
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        selectedItemColor: Colors.blue,
+      ),
     );
   }
 }

@@ -4,6 +4,8 @@ import 'package:eniachub_mobile_v011/classes/Entity.dart';
 import 'package:eniachub_mobile_v011/pages/frontoffice.dart';
 import 'package:eniachub_mobile_v011/widgets/checkIn.dart';
 import 'package:flutter/material.dart';
+import 'package:loading/indicator/ball_pulse_indicator.dart';
+import 'package:loading/loading.dart';
 
 class CompanyPage extends StatefulWidget {
   static const routeName = '/company';
@@ -145,19 +147,25 @@ class _CompanyPageState extends State<CompanyPage>
                     children: <Widget>[
                       Text(
                         'Presence',
-                        style: Theme.of(context).textTheme.display1,
+                        style: Theme.of(context).textTheme.headline4,
                       ),
                       Expanded(
                         child: _barChart,
                       ),
                     ],
                   )
-                : Center(child: CircularProgressIndicator()),
+                : Center(
+                    child: Loading(
+                      size: 100.0,
+                      color: Colors.blue,
+                      indicator: BallPulseIndicator(),
+                    ),
+                  ),
             Column(
               children: <Widget>[
                 Text(
                   'Doc chart',
-                  style: Theme.of(context).textTheme.display1,
+                  style: Theme.of(context).textTheme.headline4,
                 ),
                 Expanded(
                   child: charts.LineChart(

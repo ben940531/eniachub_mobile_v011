@@ -82,15 +82,13 @@ class _FrontOfficePageState extends State<FrontOfficePage>
                   )
                   .toList(),
             ),
-            ListView(
-              padding: EdgeInsets.all(16.0),
-              children: [
+            ListView(padding: EdgeInsets.all(16.0), children: [
               TextFormField(
                 controller: _numberFieldController,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Document number',
-                    labelStyle: Theme.of(context).textTheme.body1),
+                    labelStyle: Theme.of(context).textTheme.bodyText1),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -143,7 +141,7 @@ class _FrontOfficePageState extends State<FrontOfficePage>
                     },
                   ),
                 ],
-              ),            
+              ),
               _imagePath != null
                   ? Expanded(
                       child: Image.file(File(_imagePath)),
