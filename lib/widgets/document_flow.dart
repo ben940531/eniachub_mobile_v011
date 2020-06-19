@@ -47,43 +47,57 @@ class DocumentFlow extends StatelessWidget {
       itemCount: _documents.length,
       itemBuilder: (BuildContext context, int index) {
         return Card(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      _documents[index].subject,
-                      style: TextStyle(fontSize: 18.0),
-                    ),
-                    Text(DateFormat('yyyy.MM.dd')
-                        .format(_documents[index].date)),
-                  ],
-                ),
-                Text(_documents[index].partnerName),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
+          child: InkWell(
+            onTap: () {
+              final name = _documents[index].subject;
+              print('$name tapped');
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      OutlineButton(
-                        onPressed: () {},
-                        child: Icon(Icons.check),
-                        textColor: Colors.green,
+                      Text(
+                        _documents[index].subject,
+                        style: TextStyle(fontSize: 18.0),
                       ),
-                      OutlineButton(
-                        onPressed: () {},
-                        child: Icon(Icons.close),
-                        textColor: Colors.red,
-                        highlightedBorderColor: Colors.red,
-                      ),
+                      Text(DateFormat('yyyy.MM.dd')
+                          .format(_documents[index].date)),
                     ],
                   ),
-                )
-              ],
+                  Text(_documents[index].partnerName),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        OutlineButton(
+                          onPressed: () {
+                            print('ok');
+                          },
+                          child: Icon(Icons.check),
+                          borderSide: BorderSide(
+                            color: Colors.green,
+                          ),
+                          textColor: Colors.green,
+                        ),
+                        OutlineButton(
+                          onPressed: () {
+                            print('not ok');
+                          },
+                          child: Icon(Icons.close),
+                          textColor: Colors.red,
+                          borderSide: BorderSide(color: Colors.red),
+                          highlightedBorderColor: Colors.red,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         );

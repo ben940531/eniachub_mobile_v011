@@ -64,64 +64,69 @@ class _CheckInState extends State<CheckIn> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('Current status:'),
+        Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: Column(
+            children: <Widget>[
+              Text(
+                'Currently:',
+                style: TextStyle(fontSize: 30.0),
               ),
-            ),
-            Expanded(
-              child: Padding(
+              Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   _checkInStatus,
                   textAlign: TextAlign.right,
+                  style: TextStyle(fontSize: 50.0),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: RaisedButton(
-                  child: Text('Check in'),
-                  color: Colors.green,
-                  textColor: Colors.white,
-                  onPressed: () async {
-                    var checkIn = await _checkIn(true);
-                    setState(() {
-                      _checkInStatus = 'Checked in';
-                    });
+        Padding(
+          padding: const EdgeInsets.only(bottom: 40.0),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: RaisedButton(
+                    child: Text('CHECK IN'),
+                    color: Colors.green,
+                    textColor: Colors.white,
+                    onPressed: () async {
+                      var checkIn = await _checkIn(true);
+                      setState(() {
+                        _checkInStatus = 'Checked in';
+                      });
 
-                   _showSnackBar(context, checkIn);
-                  },
+                      _showSnackBar(context, checkIn);
+                    },
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: RaisedButton(
-                  child: Text('Check out'),
-                  color: Colors.red,
-                  textColor: Colors.white,
-                  onPressed: () async {
-                    var checkIn = await _checkIn(false);
-                    setState(() {
-                      _checkInStatus = 'Checked out';
-                    });
-                    _showSnackBar(context, checkIn);
-                  },
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: RaisedButton(
+                    child: Text('CHECK OUT'),
+                    color: Colors.red,
+                    textColor: Colors.white,
+                    onPressed: () async {
+                      var checkIn = await _checkIn(false);
+                      setState(() {
+                        _checkInStatus = 'Checked out';
+                      });
+                      _showSnackBar(context, checkIn);
+                    },
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         )
       ],
     );

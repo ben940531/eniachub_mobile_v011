@@ -73,7 +73,7 @@ class _CompanyPageState extends State<CompanyPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Company dashboard'),
+        title: Text(widget.companyName),
         backgroundColor: Colors.blue[500],
         bottom: TabBar(
           controller: _tabController,
