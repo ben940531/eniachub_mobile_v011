@@ -88,7 +88,7 @@ class _FrontOfficePageState extends State<FrontOfficePage>
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Document number',
-                    labelStyle: Theme.of(context).textTheme.bodyText1),
+                    labelStyle: Theme.of(context).textTheme.body1),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

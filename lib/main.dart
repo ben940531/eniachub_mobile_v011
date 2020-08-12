@@ -39,7 +39,7 @@ class EniacHUBMobileApp extends StatelessWidget {
         errorColor: Colors.red,
         hintColor: Colors.grey[800],
         textTheme: TextTheme(
-          bodyText1: TextStyle(fontSize: 18.0, color: Colors.black),
+          body1: TextStyle(fontSize: 18.0, color: Colors.black),
           button: TextStyle(fontSize: 18.0, color: Colors.white),
         ),
         inputDecorationTheme: InputDecorationTheme(

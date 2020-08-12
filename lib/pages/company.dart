@@ -149,7 +149,7 @@ class _CompanyPageState extends State<CompanyPage>
                     children: <Widget>[
                       Text(
                         'Presence',
-                        style: Theme.of(context).textTheme.headline4,
+                        style: Theme.of(context).textTheme.headline,
                       ),
                       Expanded(
                         child: _barChart,
@@ -167,7 +167,7 @@ class _CompanyPageState extends State<CompanyPage>
               children: <Widget>[
                 Text(
                   'Doc chart',
-                  style: Theme.of(context).textTheme.headline4,
+                  style: Theme.of(context).textTheme.headline,
                 ),
                 Expanded(
                   child: charts.LineChart(

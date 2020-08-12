@@ -133,7 +133,7 @@ class _LoginPageState extends State<LoginPage> {
                                     border: UnderlineInputBorder(),
                                     labelText: 'Verification code',
                                     labelStyle: !_isError
-                                        ? Theme.of(context).textTheme.bodyText1
+                                        ? Theme.of(context).textTheme.body1
                                         : TextStyle(
                                             fontSize: 18.0, color: Colors.red),
                                     // labelStyle:
